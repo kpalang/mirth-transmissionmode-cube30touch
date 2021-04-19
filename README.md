@@ -10,7 +10,6 @@ Like any other Mirth plugin
 1. Clone repo
 1. Run `maven clean package`
 1. Get `cube30mode.zip` file from `distribution/target`
-
 1. Drop zip contents into `mirthroot/extensions`
    - **OR**
 1. Install through Mirth Connect Administrator
