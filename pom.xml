@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.kaurpalang.mirth</groupId>
+    <artifactId>cube30touchtcp</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>server</module>
+        <module>shared</module>
+        <module>client</module>
+        <module>distribution</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <mirth.version>3.10.1</mirth.version>
+        <miglayout.version>5.2</miglayout.version>
+        <swingx.version>1.6.5-1</swingx.version>
+        <lombok.version>1.18.20</lombok.version>
+        <log4j.version>1.2.17</log4j.version>
+        <jaxb-api.version>2.4.0-b180725.0427</jaxb-api.version>
+
+        <maven-processor-plugin.version>5.0-rc1</maven-processor-plugin.version>
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <maven-jarsigner-plugin.version>3.0.0</maven-jarsigner-plugin.version>
+        <maven-jar-plugin.version>3.2.0</maven-jar-plugin.version>
+        <mirth-plugin-maven-plugin.version>1.0.2-SNAPSHOT</mirth-plugin-maven-plugin.version>
+
+        <!-- Where should annotation processor generate aggregation file -->
+        <processor.aggregator.path>distribution/aggregator/aggregated.json</processor.aggregator.path>
+
+        <!-- Plugin details -->
+        <plugin.path>cube30mode</plugin.path>
+        <plugin.name>Transmission-mode for Cube 30 Touch</plugin.name>
+        <plugin.url>https://github.com/kpalang/mirth-transmissionmode-cube30touch</plugin.url>
+        <plugin.author>Kaur Palang</plugin.author>
+        <plugin.version>1</plugin.version>
+        <plugin.mirthVersion>3.10.1</plugin.mirthVersion>
+        <plugin.archive.name>cube30mode</plugin.archive.name>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>nexus</id>
+            <url>https://nexus.kaurpalang.com/repository/maven-public/</url>
+        </repository>
+    </repositories>
+
+    <dependencies>
+        <!-- Helper plugin to handle Mirth plugin specific tasks. -->
+        <dependency>
+            <groupId>com.kaurpalang</groupId>
+            <artifactId>mirth-plugin-maven-plugin</artifactId>
+            <version>${mirth-plugin-maven-plugin.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>javax.xml.bind</groupId>
+            <artifactId>jaxb-api</artifactId>
+            <version>${jaxb-api.version}</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <!-- Specify naming pattern for submodules. For example pluginname-client.jar -->
+        <finalName>${project.parent.artifactId}-${project.artifactId}</finalName>
+
+        <plugins>
+            <plugin>
+                <groupId>org.bsc.maven</groupId>
+                <artifactId>maven-processor-plugin</artifactId>
+                <version>${maven-processor-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>process</id>
+                        <goals>
+                            <goal>process</goal>
+                        </goals>
+                        <phase>process-sources</phase>
+
+                        <configuration>
+                            <!-- Specify annotation processor class -->
+                            <processors>
+                                <processor>com.kaurpalang.mirth.annotationsplugin.processor.MirthPluginProcessor</processor>
+                            </processors>
+
+                            <options>
+                                <aggregator.file>${processor.aggregator.path}</aggregator.file>
+                            </options>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Permissions>all-permissions</Permissions>
+                            <Codebase>*</Codebase>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jarsigner-plugin</artifactId>
+                <version>${maven-jarsigner-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>sign</id>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <keystore>${project.parent.basedir}/certificate/keystore.jks</keystore>
+                    <alias>selfsigned</alias>
+                    <storepass>storepass</storepass>
+                    <keypass>keypass</keypass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
