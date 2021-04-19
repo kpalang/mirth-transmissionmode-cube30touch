@@ -67,7 +67,7 @@ Converted xml
 * Pass trough all fields and allow user to filter from Source Filters
 * Moar settings
   * Level of Rejected frame data message 
-* Implement more stuff from the specification
+* Implement more stuff from the [specification](https://www.diesse.it/en/download/id:13383/)
 * Also should probably definitely move to byte iteration for field values instead of the current Regex... 
 
 ---
