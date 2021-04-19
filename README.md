@@ -23,6 +23,46 @@ Like any other Mirth plugin
 1. Set TCP Listener data type to `Text` with default encoding. UTF-8 should be fine.
 
 ---
+## Sample
+
+Incoming hex
+```
+3e 30 30 32 35 30 31 35 31 30 31 4c 32 30 30 35 30 38 30 31 32 36 30 10 30 38 30 35 32 30 31 34 32 30 20 20 20 30 30 38 30 30 30 30 30 35 0d 34 33 3e 30 30 32 35 30 31 35 31 30 31 4c 31 39 31 31 32 32 30 31 33 36 31 10 31 32 30 35 32 30 31 34 34 30 20 20 36 38 30 30 30 30 30 30 31 38 0d 35 33 
+```
+
+Incoming ascii
+```
+>0025015101L200508012600805201420   008000005
+43>0025015101L191122013611205201440  6800000018
+53
+```
+
+Converted xml
+```xml
+<cubeFrames>
+    <cubeFrame>
+        <dataBytesCount>25</dataBytesCount>
+        <recordTubesCount>1</recordTubesCount>
+        <barcode>L20050801260</barcode>
+        <dateTime>2020-05-08T14:20</dateTime>
+        <ves>0</ves>
+        <flagText>Reading Error</flagText>
+        <cycle>5</cycle>
+    </cubeFrame>
+    <cubeFrame>
+        <dataBytesCount>25</dataBytesCount>
+        <recordTubesCount>1</recordTubesCount>
+        <barcode>L19112201361</barcode>
+        <dateTime>2020-05-12T14:40</dateTime>
+        <ves>68</ves>
+        <cycle>24</cycle>
+    </cubeFrame>
+</cubeFrames>
+```
+- If `flagText` element is present then the message is erroneous
+- **The plugin rejects frames with invalid checksums!**
+
+---
 ## Todo
 * More simplifycation
 * Implement more stuff from the specification
