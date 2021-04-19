@@ -64,6 +64,9 @@ Converted xml
 ---
 ## Todo
 * More simplifycation
+* Pass trough all fields and allow user to filter from Source Filters
+* Moar settings
+  * Level of Rejected frame data message 
 * Implement more stuff from the specification
 * Also should probably definitely move to byte iteration for field values instead of the current Regex... 
 
