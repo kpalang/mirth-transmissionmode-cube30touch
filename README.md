@@ -6,9 +6,14 @@ A transmission mode provider for [Diesse Cube 30 Touch](https://www.streck.com/p
 
 ## Installation
 Like any other Mirth plugin
+
+1. Clone repo
+1. Run `maven clean package`
+1. Get `cube30mode.zip` file from `distribution/target`
+
 1. Drop zip contents into `mirthroot/extensions`
    - **OR**
-2. Install through Mirth Connect Administrator
+1. Install through Mirth Connect Administrator
 ---
 
 ## Usage
