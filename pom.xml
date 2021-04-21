@@ -39,7 +39,7 @@
 
         <!-- Plugin details -->
         <plugin.path>cube30mode</plugin.path>
-        <plugin.name>Transmission-mode for Cube 30 Touch</plugin.name>
+        <plugin.name>Transmission mode - Cube 30 Touch</plugin.name>
         <plugin.url>https://github.com/kpalang/mirth-transmissionmode-cube30touch</plugin.url>
         <plugin.author>Kaur Palang</plugin.author>
         <plugin.version>1</plugin.version>
