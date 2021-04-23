@@ -40,11 +40,17 @@
         <!-- Plugin details -->
         <plugin.path>cube30mode</plugin.path>
         <plugin.name>Transmission mode - Cube 30 Touch</plugin.name>
+        <plugin.description></plugin.description>
         <plugin.url>https://github.com/kpalang/mirth-transmissionmode-cube30touch</plugin.url>
         <plugin.author>Kaur Palang</plugin.author>
         <plugin.version>1</plugin.version>
         <plugin.mirthVersion>3.10.1</plugin.mirthVersion>
         <plugin.archive.name>cube30mode</plugin.archive.name>
+
+        <!-- Signing -->
+        <signing.alias>selfsigned</signing.alias>
+        <signing.storepass>storepass</signing.storepass>
+        <signing.keypass>keypass</signing.keypass>
     </properties>
 
     <repositories>
@@ -140,10 +146,11 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <keystore>${project.parent.basedir}/certificate/keystore.jks</keystore>
-                    <alias>selfsigned</alias>
-                    <storepass>storepass</storepass>
-                    <keypass>keypass</keypass>
+                    <keystore>${project.parent.basedir}/signing.jks</keystore>
+                    <alias>${signing.alias}</alias>
+                    <storepass>${signing.storepass}</storepass>
+                    <keypass>${signing.keypass}</keypass>
+                    <sigfile>SERVER</sigfile>
                 </configuration>
             </plugin>
         </plugins>
