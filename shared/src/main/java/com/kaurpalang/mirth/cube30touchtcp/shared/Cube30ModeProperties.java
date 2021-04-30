@@ -55,4 +55,9 @@ public class Cube30ModeProperties extends FrameModeProperties {
 
         return equal && super.equals(obj);
     }
+
+    @Override
+    public int hashCode() {
+        return this.ackBytes.hashCode() + this.nackBytes.hashCode() + this.maxRetries.hashCode();
+    }
 }
