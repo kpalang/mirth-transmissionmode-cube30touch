@@ -14,15 +14,17 @@ public class DataFlags {
     public static final int RESERVED_1 = 0x40;
     public static final int RESERVED_2 = 0x80;
 
-    public static final Map<Integer, String> flagToTextMap = new HashMap<Integer, String>() {{
+    public static final Map<Integer, String> flagToTextMap = new HashMap<Integer, String>(){};
+
+    static {
         //put(NO_ERR, "No error");
-        put(SAMPLE_HIGH, "Sample High");
-        put(SAMPLE_LOW, "Sample Low");
-        put(SAMPLE_ABSENT, "Sample Absent");
-        put(READING_ERROR, "Reading Error");
-        put(QC_PASS, "QC Pass");
-        put(QC_FAIL, "QC Fail");
-        put(RESERVED_1, "Reserved 1");
-        put(RESERVED_2, "Reserved 2");
-    }};
+        flagToTextMap.put(SAMPLE_HIGH, "Sample High");
+        flagToTextMap.put(SAMPLE_LOW, "Sample Low");
+        flagToTextMap.put(SAMPLE_ABSENT, "Sample Absent");
+        flagToTextMap.put(READING_ERROR, "Reading Error");
+        flagToTextMap.put(QC_PASS, "QC Pass");
+        flagToTextMap.put(QC_FAIL, "QC Fail");
+        flagToTextMap.put(RESERVED_1, "Reserved 1");
+        flagToTextMap.put(RESERVED_2, "Reserved 2");
+    }
 }
