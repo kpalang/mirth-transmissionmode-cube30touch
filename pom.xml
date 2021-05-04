@@ -6,7 +6,7 @@
 
     <groupId>com.kaurpalang.mirth</groupId>
     <artifactId>cube30touchtcp</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -40,7 +40,7 @@
         <!-- Plugin details -->
         <plugin.path>cube30mode</plugin.path>
         <plugin.name>Transmission mode - Cube 30 Touch</plugin.name>
-        <plugin.description></plugin.description>
+        <plugin.description>Transmission mode provider for Cube 30 Touch erythrocyte sedimentation rate analyzer</plugin.description>
         <plugin.url>https://github.com/kpalang/mirth-transmissionmode-cube30touch</plugin.url>
         <plugin.author>Kaur Palang</plugin.author>
         <plugin.version>1</plugin.version>
