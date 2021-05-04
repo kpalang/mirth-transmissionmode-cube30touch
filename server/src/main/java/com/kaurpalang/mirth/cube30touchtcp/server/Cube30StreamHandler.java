@@ -73,7 +73,7 @@ public class Cube30StreamHandler extends FrameStreamHandler {
                 }
             }
 
-            // If current iteration is at >00, add old bytesaggregator to messages aggregator and
+            // If current iteration is at >00, add old bytes aggregator to messages aggregator and
             // instantiate a new one
             if (isMessageSplit) {
                 framesAggregator.add(bytesAggregator);
