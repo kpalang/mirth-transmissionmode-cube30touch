@@ -43,6 +43,9 @@ public class CubeFrame {
     @XmlElement(name = "cycle")
     private int cycleCount;
 
+    @XmlElement(name = "checksumMatch")
+    private boolean checksumMatch;
+
     @Getter private boolean isValidFrame;
 
     public CubeFrame(LinkedList<Byte> frameData) {
@@ -83,7 +86,9 @@ public class CubeFrame {
 
         // Return true if the checksum group in textual representation equals
         // the xor value converted to hexadecimal
-        return frameMatcher.group("checksum").equals(Integer.toHexString(xor));
+        boolean checksumMatch = frameMatcher.group("checksum").equals(Integer.toHexString(xor));
+        this.checksumMatch = checksumMatch;
+        return checksumMatch;
     }
 
     private byte[] getRawDataInPrimitive() {
