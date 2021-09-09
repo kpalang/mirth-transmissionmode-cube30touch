@@ -43,14 +43,16 @@ public class CubeFrame {
     @XmlElement(name = "cycle")
     private int cycleCount;
 
-    @XmlElement(name = "checksumMatch")
-    private boolean checksumMatch;
-
+    @XmlElement(name = "isValidFrame")
     @Getter private boolean isValidFrame;
+
+    @XmlElement(name = "invalidityReason")
+    private FrameInvalidityReasonEnum invalidityReason;
 
     public CubeFrame(LinkedList<Byte> frameData) {
         this.isValidFrame = false;
         this.rawData = frameData;
+        invalidityReason = null;
 
         // Convert bytes to a text
         String textRepresentation = new String(getRawDataInPrimitive(), StandardCharsets.UTF_8);
@@ -59,19 +61,15 @@ public class CubeFrame {
 
         this.isValidFrame = this.validateFrame(frameMatcher);
 
-        // If frame is valid, populate model's other fields too
-        if (this.isValidFrame) {
-            this.populateFields(frameMatcher);
-        }
+        // Populate model's other fields
+        this.populateFields(frameMatcher);
     }
 
     private boolean validateFrame(Matcher frameMatcher) {
-
-        boolean isTextValid = frameMatcher.matches();
-
         // If text does not match regex, return false.
         // I don't really have a better way to check this tbh
-        if (!isTextValid) {
+        if (!frameMatcher.matches()) {
+            this.invalidityReason = FrameInvalidityReasonEnum.TEXTUAL_REPRESENTATION_FAULT;
             return false;
         }
 
@@ -87,7 +85,11 @@ public class CubeFrame {
         // Return true if the checksum group in textual representation equals
         // the xor value converted to hexadecimal
         boolean checksumMatch = frameMatcher.group("checksum").equals(Integer.toHexString(xor));
-        this.checksumMatch = checksumMatch;
+
+        if (!checksumMatch) {
+            this.invalidityReason = FrameInvalidityReasonEnum.CHECKSUM_FAULT;
+        }
+
         return checksumMatch;
     }
 
@@ -133,6 +135,7 @@ public class CubeFrame {
         //builder.append("flags").append(": ").append().append("\n");
         builder.append("cycle").append(": ").append(cycleCount).append("\n");
         builder.append("isValid").append(": ").append(isValidFrame).append("\n");
+        builder.append("InvalidityReason").append(": ").append(invalidityReason).append("\n");
 
         return builder.toString().trim();
     }

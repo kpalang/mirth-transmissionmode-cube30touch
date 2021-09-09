@@ -9,6 +9,10 @@ import java.util.List;
 
 @XmlRootElement(name = "cubeFrames")
 public class CubeFrames {
+
+    @XmlElement(name = "readFrameCount")
+    int frameCount;
+
     @XmlElement(name = "cubeFrame")
     @Setter List<CubeFrame> cubeFrameList;
 
@@ -17,5 +21,6 @@ public class CubeFrames {
             this.cubeFrameList = new ArrayList<>();
         }
         this.cubeFrameList.add(frame);
+        this.frameCount++;
     }
 }
