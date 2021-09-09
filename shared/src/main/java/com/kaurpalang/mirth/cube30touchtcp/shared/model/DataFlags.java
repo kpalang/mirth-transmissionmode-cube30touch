@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DataFlags {
+    private DataFlags() {
+
+    }
+
     //public static final int NO_ERR = 0x00;
     public static final int SAMPLE_HIGH = 0x01;
     public static final int SAMPLE_LOW = 0x02;
