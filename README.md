@@ -18,7 +18,7 @@ Like any other Mirth plugin
 ## Usage
 1. Set Source Connector inbound datatype to `XML`
 1. Set Source Connector Type to `TCP Listener`
-1. Set transmission mode to `Cube30Touch Transmission Mode`
+1. Set transmission mode to `Cube30Touch`
 1. Set TCP Listener data type to `Text` with default encoding. UTF-8 should be fine.
 
 ---
@@ -26,27 +26,29 @@ Like any other Mirth plugin
 
 Incoming hex
 ```
-3e 30 30 32 35 30 31 35 31 30 31 4c 32 30 30 35 30 38 30 31 32 36 30 10 30 38 30 35 32 30 31 34 32 30 20 20 20 30 30 38 30 30 30 30 30 35 0d 34 33 3e 30 30 32 35 30 31 35 31 30 31 4c 31 39 31 31 32 32 30 31 33 36 31 10 31 32 30 35 32 30 31 34 34 30 20 20 36 38 30 30 30 30 30 30 31 38 0d 35 33 
+3e 30 30 32 35 30 31 35 31 30 31 4c 32 30 30 35 30 38 30 31 32 36 30 10 30 38 30 35 32 30 31 34 32 30 20 20 20 30 30 38 30 30 30 30 30 35 0d 34 33 3e 30 30 32 35 30 31 35 31 30 31 4c 31 39 31 31 32 32 30 31 33 36 31 10 31 32 30 35 32 30 31 34 34 30 20 20 36 38 30 30 30 30 30 30 31 38 0d 35 34 
 ```
 
 Incoming ascii
 ```
 >0025015101L200508012600805201420   008000005
 43>0025015101L191122013611205201440  6800000018
-53
+54
 ```
 
 Converted xml
 ```xml
 <cubeFrames>
+    <readFrameCount>2</readFrameCount>
     <cubeFrame>
         <dataBytesCount>25</dataBytesCount>
         <recordTubesCount>1</recordTubesCount>
         <barcode>L20050801260</barcode>
         <dateTime>2020-05-08T14:20</dateTime>
         <ves>0</ves>
-        <flagText>Reading Error</flagText>
+        <flag>Reading Error</flag>
         <cycle>5</cycle>
+        <isValidFrame>true</isValidFrame>
     </cubeFrame>
     <cubeFrame>
         <dataBytesCount>25</dataBytesCount>
@@ -55,20 +57,22 @@ Converted xml
         <dateTime>2020-05-12T14:40</dateTime>
         <ves>68</ves>
         <cycle>24</cycle>
+        <isValidFrame>false</isValidFrame>
+        <invalidityReason>CHECKSUM_FAULT</invalidityReason>
     </cubeFrame>
 </cubeFrames>
 ```
 - If `flagText` element is present then the message is erroneous
-- **The plugin rejects frames with invalid checksums!**
+- ~~**The plugin rejects frames with invalid checksums!**~~ No longer...
 
 ---
 ## Todo
-* More simplifycation
-* Pass trough all fields and allow user to filter from Source Filters
+* More simplification
+* Pass through all fields and allow user to filter from Source Filters
 * Moar settings
   * Level of Rejected frame data message 
 * Implement more stuff from the [specification](https://www.diesse.it/en/download/id:13383/)
-* Also should probably definitely move to byte iteration for field values instead of the current Regex... 
+* Also, should probably definitely move to byte iteration for field values instead of the current Regex... 
 
 ---
 ## Notes
