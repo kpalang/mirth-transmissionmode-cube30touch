@@ -26,7 +26,6 @@ public class Cube30ModeSettingsPanel extends JPanel {
         this.settingsButton.setPreferredSize(new Dimension(22, 22));
         this.settingsButton.addActionListener(Cube30ModeSettingsPanel.this::settingsButtonActionPerformed);
 
-
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING).addComponent(this.settingsButton, -2, -1, -2));

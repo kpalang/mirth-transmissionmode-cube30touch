@@ -9,10 +9,7 @@ import org.apache.log4j.Logger;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,19 +19,20 @@ public class Cube30StreamHandler extends FrameStreamHandler {
 
     public Cube30StreamHandler(InputStream inputStream, OutputStream outputStream, BatchStreamReader batchStreamReader, TransmissionModeProperties transmissionModeProperties) {
         super(inputStream, outputStream, batchStreamReader, transmissionModeProperties);
+        setReturnDataOnException(true);
     }
 
     @Override
     public byte[] read() throws IOException {
         byte[] message = super.read();
+
         CubeFrames frames = new CubeFrames();
 
         // Iterate over frames
         for (LinkedList<Byte> frameBytes : getListOfFrames(message)) {
             CubeFrame frame = new CubeFrame(frameBytes);
 
-            // Only add to collection if frame is valid
-            if (frame.isValidFrame()) frames.add(frame);
+            frames.add(frame);
         }
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -43,7 +41,7 @@ public class Cube30StreamHandler extends FrameStreamHandler {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(CubeFrames.class);
             Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-            jaxbMarshaller.setProperty( Marshaller.JAXB_FORMATTED_OUTPUT, true );
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true );
 
             jaxbMarshaller.marshal(frames, byteArrayOutputStream);
         } catch (Exception e) {
