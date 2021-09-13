@@ -4,52 +4,74 @@ import com.kaurpalang.mirth.cube30touchtcp.shared.Cube30ModeProperties;
 import com.mirth.connect.model.transmission.TransmissionModeProperties;
 import com.mirth.connect.model.transmission.framemode.FrameModeProperties;
 import com.mirth.connect.plugins.FrameTransmissionModeClientProvider;
-import com.mirth.connect.plugins.mllpmode.MLLPModeSettingsDialog;
-import com.mirth.connect.plugins.mllpmode.MLLPModeSettingsPanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Cube30ModeClientProvider extends FrameTransmissionModeClientProvider {
-    static final String CHANGE_START_BYTES_COMMAND = "changeStartBytes";
-    static final String CHANGE_END_BYTES_COMMAND = "changeEndBytes";
-    protected MLLPModeSettingsPanel settingsPanel;
+    protected Cube30ModeSettingsPanel settingsPanel;
     private Cube30ModeProperties cubeModeProperties;
 
-    public Cube30ModeClientProvider() {
-    }
+    public Cube30ModeClientProvider() {}
 
+    @Override
     public void initialize(ActionListener actionListener) {
         super.initialize(actionListener);
-        this.settingsPanel = new MLLPModeSettingsPanel(this);
+        settingsPanel = new Cube30ModeSettingsPanel(this);
         super.settingsPanel.switchComponent(this.settingsPanel);
-        this.setProperties(new Cube30ModeProperties());
+        setProperties(new Cube30ModeProperties());
     }
 
+    @Override
     public TransmissionModeProperties getProperties() {
-        FrameModeProperties frameModeProperties = (FrameModeProperties)super.getProperties();
-        this.cubeModeProperties.setStartOfMessageBytes(frameModeProperties.getStartOfMessageBytes());
-        this.cubeModeProperties.setEndOfMessageBytes(frameModeProperties.getEndOfMessageBytes());
-        return this.cubeModeProperties;
+        FrameModeProperties frameModeProperties = (FrameModeProperties) super.getProperties();
+        cubeModeProperties.setStartOfMessageBytes(frameModeProperties.getStartOfMessageBytes());
+        cubeModeProperties.setEndOfMessageBytes(frameModeProperties.getEndOfMessageBytes());
+
+        System.out.println(
+                "PROVIDER get props"
+                        + "\noutgoing " + cubeModeProperties.isRejectInvalidFrames() + " " + cubeModeProperties.getLogLevel()
+                        + "\n--------------------"
+        );
+        return cubeModeProperties;
     }
 
+    @Override
     public TransmissionModeProperties getDefaultProperties() {
         return new Cube30ModeProperties();
     }
 
+    @Override
     public void setProperties(TransmissionModeProperties properties) {
         super.setProperties(properties);
         if (properties instanceof Cube30ModeProperties) {
-            this.cubeModeProperties = (Cube30ModeProperties)properties;
+            Cube30ModeProperties props = (Cube30ModeProperties) properties;
+
+            if (this.cubeModeProperties == null) {
+                System.out.println(
+                        "PROVIDER set props"
+                                + "\nincoming " + props.isRejectInvalidFrames() + " " + props.getLogLevel()
+                                + "\n--------------------"
+                );
+            } else {
+                System.out.println(
+                        "PROVIDER set props"
+                                + "\nincoming " + props.isRejectInvalidFrames() + " " + props.getLogLevel()
+                                + "\nlocal " + this.cubeModeProperties.isRejectInvalidFrames() + " " + this.cubeModeProperties.getLogLevel()
+                                + "\n--------------------"
+                );
+            }
+
+            this.cubeModeProperties = props;
         } else {
             this.cubeModeProperties = new Cube30ModeProperties();
-            FrameModeProperties frameModeProperties = (FrameModeProperties)properties;
+            FrameModeProperties frameModeProperties = (FrameModeProperties) properties;
             this.cubeModeProperties.setStartOfMessageBytes(frameModeProperties.getStartOfMessageBytes());
             this.cubeModeProperties.setEndOfMessageBytes(frameModeProperties.getEndOfMessageBytes());
         }
 
-        this.changeSampleValue();
+        changeSampleValue();
     }
 
     public JComponent getSettingsComponent() {
@@ -60,21 +82,16 @@ public class Cube30ModeClientProvider extends FrameTransmissionModeClientProvide
         return "Cube30 Sample Frame:";
     }
 
+    @Override
     public void actionPerformed(ActionEvent evt) {
-        if (evt.getActionCommand().equals("changeStartBytes")) {
-            super.settingsPanel.startOfMessageBytesField.setText(((JTextField)evt.getSource()).getText());
-        } else if (evt.getActionCommand().equals("changeEndBytes")) {
-            super.settingsPanel.endOfMessageBytesField.setText(((JTextField)evt.getSource()).getText());
-        } else {
-            MLLPModeSettingsDialog settingsDialog = new MLLPModeSettingsDialog(this);
-            settingsDialog.setProperties(this.cubeModeProperties);
-            settingsDialog.setVisible(true);
-            if (settingsDialog.isSaved()) {
-                this.setProperties(settingsDialog.getProperties());
-            } else {
-                this.setProperties(this.cubeModeProperties);
-            }
-        }
+        Cube30ModeSettingsDialog settingsDialog = new Cube30ModeSettingsDialog(this);
+        settingsDialog.setProperties(this.cubeModeProperties);
+        settingsDialog.setVisible(true);
 
+        if (settingsDialog.isSaved()) {
+            this.setProperties(settingsDialog.getProperties());
+        } else {
+            this.setProperties(this.cubeModeProperties);
+        }
     }
 }
