@@ -84,6 +84,7 @@ public class Cube30ModeClientProvider extends FrameTransmissionModeClientProvide
 
     @Override
     public void actionPerformed(ActionEvent evt) {
+        /*
         Cube30ModeSettingsDialog settingsDialog = new Cube30ModeSettingsDialog(this);
         settingsDialog.setProperties(this.cubeModeProperties);
         settingsDialog.setVisible(true);
@@ -93,5 +94,7 @@ public class Cube30ModeClientProvider extends FrameTransmissionModeClientProvide
         } else {
             this.setProperties(this.cubeModeProperties);
         }
+
+         */
     }
 }
